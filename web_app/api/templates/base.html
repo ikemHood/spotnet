@@ -65,5 +65,7 @@
 
     <!-- Custom JS for Wallet Connection and Logout -->
     <script src="{{ url_for('static', path='js/wallet.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

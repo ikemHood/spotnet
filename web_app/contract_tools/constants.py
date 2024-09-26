@@ -64,6 +64,13 @@ class TokenParams:
                 return token.address
         raise ValueError(f"Token {token_name} not found")
 
+    @classmethod
+    def get_token_decimals(cls, token_name: str) -> int:
+        for token in cls.tokens():
+            if token.name == token_name:
+                return token.decimals
+        raise ValueError(f"Token {token_name} not found")
+
 
 class ProtocolAddress(Enum):
 
