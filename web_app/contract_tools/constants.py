@@ -72,7 +72,7 @@ class TokenParams:
         :return: Token decimals
         """
         for token in cls.tokens():
-            if token.address == token_address:
+            if token.name == token_address:
                 return token.decimals
         raise ValueError(f"Token with address {token_address} not found")
 

@@ -36,7 +36,7 @@ class StarknetClient:
         """
         Initializes the Starknet client with a given node URL.
         """
-        node_url = os.getenv("STARKNET_NODE_URL")
+        node_url = os.getenv("STARKNET_NODE_URL") or "http://127.0.0.1:5050"
         if not node_url:
             raise ValueError("STARKNET_NODE_URL environment variable is not set")
 
