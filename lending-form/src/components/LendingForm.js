@@ -56,7 +56,7 @@ const LendingForm = ({walletId}) => {
 
             console.log("Query Params:", queryParams);
             // TODO: Add .env file if possible
-            const response = await fetch(`http://127.0.0.1:8000/transaction-data?${queryParams}`, {
+            const response = await fetch(`http://0.0.0.0:8000/transaction-data?${queryParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
