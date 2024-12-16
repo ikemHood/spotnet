@@ -321,13 +321,10 @@ async def withdraw_all(wallet_id: str) -> dict:
             raise HTTPException(status_code=404, detail="Contract not found")
 
         # Perform withdrawals
-        try:
-            await CLIENT.withdraw_all(contract_address)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Failed to withdraw tokens: {str(e)}")
+        await CLIENT.withdraw_all(contract_address)
         
         return {"detail": "Successfully initiated withdrawals for all tokens"}
-        
+
     except Exception as e:
         logger.error(f"Error in withdraw_all: {e}")
         raise HTTPException(
