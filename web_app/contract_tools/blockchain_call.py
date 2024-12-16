@@ -26,6 +26,7 @@ class RepayDataException(Exception):
     """
     Custom RepayDataException for handling errors while repaying data
     """
+
     pass
 
 
@@ -101,7 +102,9 @@ class StarknetClient:
             }
 
         """
-        token0, token1 = sorted(map(lambda x: StarknetClient._convert_address(x), (token0, token1)))
+        token0, token1 = sorted(
+            map(lambda x: StarknetClient._convert_address(x), (token0, token1))
+        )
         return {
             "token0": token0,
             "token1": token1,
@@ -111,7 +114,9 @@ class StarknetClient:
         }
 
     @staticmethod
-    async def _get_pool_price(pool_key, is_token1: bool, ekubo_contract: "Contract") -> Decimal:
+    async def _get_pool_price(
+        pool_key, is_token1: bool, ekubo_contract: "Contract"
+    ) -> Decimal:
         """
         Calculate Ekubo pool price.
 
@@ -258,7 +263,9 @@ class StarknetClient:
         }
 
         pool_price = floor(
-            await self._get_pool_price(pool_key, deposit_token == pool_key["token1"], ekubo_contract)
+            await self._get_pool_price(
+                pool_key, deposit_token == pool_key["token1"], ekubo_contract
+            )
         )
         return {
             "pool_price": pool_price,
@@ -271,7 +278,9 @@ class StarknetClient:
             "caller": wallet_id,
         }
 
-    async def get_repay_data(self, deposit_token: str, borrowing_token: str, ekubo_contract: "Contract") -> dict:
+    async def get_repay_data(
+        self, deposit_token: str, borrowing_token: str, ekubo_contract: "Contract"
+    ) -> dict:
         """
         Get data for Spotnet position closing.
 
@@ -289,7 +298,9 @@ class StarknetClient:
         ), self._convert_address(borrowing_token)
 
         is_token1 = deposit_token == pool_key["token1"]
-        supply_price = floor(await self._get_pool_price(pool_key, is_token1, ekubo_contract))
+        supply_price = floor(
+            await self._get_pool_price(pool_key, is_token1, ekubo_contract)
+        )
 
         try:
             debt_price = floor(Decimal((1 / supply_price)) * 10**decimals_sum)
@@ -324,6 +335,21 @@ class StarknetClient:
             addr=self._convert_address(contract_address),
             selector="is_position_open",
             calldata=[],
+        )
+
+    async def add_extra_deposit(self, contract_address: str, token_address: str, amount: str) -> Any:
+        """
+        Adds extra deposit to position.
+
+        :param contract_address: The contract address.
+        :param token_address: The token address.
+        :param amount: The amount to deposit.
+        """
+
+        return await self._func_call(
+            addr=self._convert_address(contract_address),
+            selector="extra_deposit",
+            calldata=[self._convert_address(token_address), amount],
         )
 
     async def withdraw_all(self, contract_address: str) -> List[Any]:
